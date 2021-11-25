@@ -1,30 +1,50 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router';
-import { showform } from '../actions';
-//import { loginReducer } from '../reducers/loginReducer';
-//import loginreducer from '../reducers/loginreducer';
+import { login, setLogin } from '../actions';
+
+
 export default function Login() {
+
+  const [result, setResult] = useState();
+  const data = useSelector((state) => state.loginreducer.data)
+  const selector = useSelector((state) => state.loginreducer)
+  console.log(data)
+  const history = useHistory();
+  const { username, password } = data
+
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state.loginreducer.show)
-  
-  const handleClose = () => dispatch(showform(false));
-  const handleShow = () => dispatch(showform(true));
 
+  const handleChnage = (e) => {
+    dispatch(setLogin({ ...data, [e.target.name]: e.target.value }))
+  }
+  const handleClose = () => {
+    dispatch(login(false))
+  }
+  const handleShow = () => {
+    dispatch(login(true))
+  }
 
-  const [Details, setDetails] = useState({
-    name: "",
-    password: ""
-  })
-  const { name, password } = Details
-  const handlechnage = (e) => {
-    setDetails({ ...Details, [e.target.name]: e.target.value })
+  const DataLoad = async () => {
+    axios.get("http://localhost:3002/user").then((response) => {
+      (setResult(response.data))
+
+    })
   }
-  const history = useHistory
-  const chnagepage = () => {
-    history.push("/chnagepage")
+  useEffect(() => {
+    DataLoad()
+  }, [])
+
+  const loginValidation= () =>{
+
+    if(username && password==result.map((user)=>user.username&&user.password)){
+       history.push('/Dashboard')
+    }
+    else(alert("check name and user"))
   }
+
 
   return (
     <div>
@@ -32,7 +52,7 @@ export default function Login() {
       <Button variant="primary" onClick={handleShow}>
         Login
       </Button>
-      <Modal show={selector} onHide={handleClose}>
+      <Modal show={selector.show} onHide={handleClose}>
         <Modal.Header >
           <Modal.Title>
             Login Page
@@ -41,34 +61,34 @@ export default function Login() {
         <Modal.Body>
           <input
             type="text"
-            name="name"
+            name="username"
             placeholder="username"
+            autoComplete="off"
             className="my-3"
-            value={name}
-            onChange={handlechnage}
+            value={username}
+            onChange={handleChnage}
           />
           <input
             type="password"
             name="password"
             placeholder="password"
+            autoComplete="off"
             value={password}
-            onChange={handlechnage}
+            onChange={handleChnage}
           />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={handleClose}>Login</Button>
-          {/* {users.map((item) => (
-            <>
-              <Button
-                variant="primary"
-                onClick={() => loginValidation(item.username, item.password)}>
-                Login
-              </Button>
-            </>
-          ))} */}
+
+
+          <>
+            <Button variant="primary" onClick={loginValidation}>
+              Login
+            </Button>
+          </>
+
         </Modal.Footer>
       </Modal>
     </div>

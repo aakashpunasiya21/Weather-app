@@ -1,4 +1,4 @@
-import {  RECEIVE_USER, SET_DATA, SHOW } from "../actions"
+import {  LOGIN_PAGE, RECEIVE_USER, SET_DATA, SHOW } from "../actions"
 const initialstate ={
     show:false,
     record : [],
@@ -7,26 +7,19 @@ const initialstate ={
         password:""
     }
 }
-const loginreducer = (state=initialstate,action)=>{
+export default function loginreducer(state=initialstate,action){
     switch(action.type){
-        case RECEIVE_USER:
+        case LOGIN_PAGE:
             return{
                 ...state,
-                record:action.user
-            }
+                show:action.payload
+            };
         case SET_DATA:
             return{
                 ...state,
                 data:action.payload
             }
- 
-        case SHOW:
-            return{
-                ...state,
-                show : action.payload
-            }
-            default:
-                return state;
-    }
+        default:
+            return state;
 }
-export default loginreducer
+}
