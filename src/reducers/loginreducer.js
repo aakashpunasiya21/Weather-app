@@ -1,8 +1,7 @@
-import {  LOGIN_PAGE, RECEIVE_USER, SET_DATA, SHOW } from "../actions"
+import {  LOGIN_PAGE, SET_DATA } from "../actions"
 const initialstate ={
     show:false,
-    record : [],
-    data:{
+        data:{
         username:"",
         password:""
     }

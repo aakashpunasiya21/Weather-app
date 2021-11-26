@@ -9,7 +9,9 @@ export default function weather(state = initialState, action) {
       return {
         ...state,
         city: action.payload
+       
       }
+      
     case SET_WEATHER:
       return {
         ...state,

@@ -4,8 +4,6 @@ import { Button, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router';
 import { login, setLogin } from '../actions';
-
-
 export default function Login() {
 
   const [result, setResult] = useState();
@@ -29,27 +27,27 @@ export default function Login() {
 
   const DataLoad = async () => {
     axios.get("http://localhost:3002/user").then((response) => {
-      (setResult(response.data))
 
+      (setResult(response.data))
     })
   }
+
   useEffect(() => {
     DataLoad()
+    //localStorage.setItem('lists',JSON.stringify(setResult))
   }, [])
 
-  const loginValidation= () =>{
+  const loginValidation = () => {
 
-    if(username && password==result.map((user)=>user.username&&user.password)){
-       history.push('/Dashboard')
+    if (username && password == result.map((user) => user.username && user.password)) {
+      history.push('/dasbord')
     }
-    else(alert("check name and user"))
+    else (alert("check username and password"))
   }
-
-
   return (
-    <div>
-      <h2 className="text-center">Welcome to login page</h2>
-      <Button variant="primary" onClick={handleShow}>
+    <div className="container">
+      <h2 className="text-center">Weather App</h2>
+      <Button variant="primary" className="ml-10" onClick={handleShow}>
         Login
       </Button>
       <Modal show={selector.show} onHide={handleClose}>
@@ -81,14 +79,9 @@ export default function Login() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-
-
-          <>
-            <Button variant="primary" onClick={loginValidation}>
-              Login
-            </Button>
-          </>
-
+          <Button variant="primary" onClick={loginValidation}>
+            Login
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
